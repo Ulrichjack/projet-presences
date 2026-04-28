@@ -1,0 +1,13 @@
+# Ignorer le dossier virtuel Python
+venv/
+env/
+
+# Ignorer les mots de passe et secrets
+.env
+
+# Ignorer les fichiers de cache Python
+__pycache__/
+*.pyc
+
+# Ignorer la base de données SQLite (si on en utilisait une)
+*.db

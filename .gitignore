@@ -1,0 +1,10 @@
+# Ignorer les environnements virtuels
+backend/venv/
+backend/env/
+
+# Ignorer les mots de passe
+backend/.env
+
+# Ignorer les caches
+backend/__pycache__/
+*.pyc
