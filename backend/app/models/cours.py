@@ -1,0 +1,9 @@
+from sqlalchemy import Column, Integer, String
+from app.database import Base
+
+class Cours(Base):
+    __tablename__ = "cours"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nom = Column(String(100), unique=True, index=True, nullable=False)
+    description = Column(String(255), nullable=True)
