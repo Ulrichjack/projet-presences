@@ -8,6 +8,7 @@ class EnseignantCreate(BaseModel):
     prenom: str
     matricule: str
     email: EmailStr
+    mot_de_passe: str
     specialite: Optional[str] = None
 
 

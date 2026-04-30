@@ -41,3 +41,6 @@ def supprimer_presence(db: Session, presence_id: int):
     db.delete(db_presence)
     db.commit()
     return {"message": "Pointage supprimé avec succès."}
+
+def get_presences_par_etudiant(db: Session, etudiant_id: int):
+    return db.query(Presence).filter(Presence.etudiant_id == etudiant_id).all()

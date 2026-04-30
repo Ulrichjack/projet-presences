@@ -9,6 +9,7 @@ class EtudiantCreate(BaseModel):
     prenom: str
     matricule: str
     email: EmailStr  # Pydantic vérifiera tout seul que c'est un vrai format d'email !
+    mot_de_passe: str
     photo_reference: Optional[str] = None
     qr_code: str
 

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from app.models.etudiant import Etudiant
 from app.schemas.etudiant import EtudiantCreate
-
+from app.utils.security import hacher_mot_de_passe
 #CREATE
 def creer_etudiant (db: Session, etudiant: EtudiantCreate):
         etudiant_existant = db.query(Etudiant).filter(
@@ -12,6 +12,9 @@ def creer_etudiant (db: Session, etudiant: EtudiantCreate):
 
         if etudiant_existant:
             raise HTTPException(status_code=400, detail="Ce matricule ou cet email existe deja")
+
+        etudiant.mot_de_passe = hacher_mot_de_passe(etudiant.mot_de_passe)
+
         nouvel_etudiant = Etudiant(**etudiant.model_dump())
 
         db.add(nouvel_etudiant)

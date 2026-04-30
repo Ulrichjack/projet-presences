@@ -1,4 +1,3 @@
-# app/routes/enseignants.py
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -6,32 +5,32 @@ from app.database import get_db
 from app.schemas.enseignant import EnseignantResponse, EnseignantCreate
 from app.services import enseignant_service
 
-router = APIRouter(
-    prefix="/enseignants",
-    tags=["Enseignants"]
-)
+# --- IMPORTS DE SÉCURITÉ ---
+from app.dependencies import verifier_admin, obtenir_utilisateur_actuel
 
-# 1. CRÉER
+router = APIRouter(prefix="/enseignants", tags=["Enseignants"])
+
+# 🔒 ADMIN SEULEMENT
 @router.post("/", response_model=EnseignantResponse, status_code=201)
-def creer_enseignant(enseignant: EnseignantCreate, db: Session = Depends(get_db)):
+def creer_enseignant(enseignant: EnseignantCreate, db: Session = Depends(get_db), admin = Depends(verifier_admin)):
     return enseignant_service.creer_enseignant(db=db, enseignant=enseignant)
 
-# 2. LIRE TOUT
+# 🔓 TOUT UTILISATEUR CONNECTÉ
 @router.get("/", response_model=list[EnseignantResponse])
-def lire_enseignants(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def lire_enseignants(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), user = Depends(obtenir_utilisateur_actuel)):
     return enseignant_service.get_enseignant(db=db, skip=skip, limit=limit)
 
-# 3. LIRE UN SEUL
+# 🔓 TOUT UTILISATEUR CONNECTÉ
 @router.get("/{enseignant_id}", response_model=EnseignantResponse)
-def lire_enseignant_par_id(enseignant_id: int, db: Session = Depends(get_db)):
+def lire_enseignant_par_id(enseignant_id: int, db: Session = Depends(get_db), user = Depends(obtenir_utilisateur_actuel)):
     return enseignant_service.get_enseignant_par_id(db=db, enseignant_id=enseignant_id)
 
-# 4. MODIFIER
+# 🔒 ADMIN SEULEMENT
 @router.put("/{enseignant_id}", response_model=EnseignantResponse)
-def modifier_enseignant(enseignant_id: int, enseignant: EnseignantCreate, db: Session = Depends(get_db)):
+def modifier_enseignant(enseignant_id: int, enseignant: EnseignantCreate, db: Session = Depends(get_db), admin = Depends(verifier_admin)):
     return enseignant_service.modifier_enseignant(db=db, enseignant_id=enseignant_id, enseignant_update=enseignant)
 
-# 5. SUPPRIMER
+# 🔒 ADMIN SEULEMENT
 @router.delete("/{enseignant_id}")
-def supprimer_enseignant(enseignant_id: int, db: Session = Depends(get_db)):
+def supprimer_enseignant(enseignant_id: int, db: Session = Depends(get_db), admin = Depends(verifier_admin)):
     return enseignant_service.supprimer_enseignant(db=db, enseignant_id=enseignant_id)

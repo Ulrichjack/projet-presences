@@ -6,9 +6,11 @@ class SeanceCreate(BaseModel):
     date_heure_fin: datetime
     cours_id: int
     enseignant_id: int
+    salle: str
 
 class SeanceResponse(SeanceCreate):
     id: int
+    code_validation: str
 
     class Config:
         from_attributes = True

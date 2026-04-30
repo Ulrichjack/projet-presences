@@ -4,7 +4,8 @@ sqlalchemy
 psycopg2-binary
 pydantic
 python-jose[cryptography]
-passlib[bcrypt]
+passlib
+bcrypt==3.2.2
 python-multipart
 qrcode[pil]
 deepface
@@ -12,3 +13,4 @@ opencv-python
 openpyxl
 reportlab
 python-dotenv
+tf-keras

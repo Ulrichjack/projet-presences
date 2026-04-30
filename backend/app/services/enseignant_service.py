@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from app.models.enseignant import Enseignant
 from app.schemas.enseignant import EnseignantCreate
+from app.utils.security import hacher_mot_de_passe
+
 
 #CREATE
 def creer_enseignant(db: Session, enseignant: EnseignantCreate):
@@ -11,6 +13,8 @@ def creer_enseignant(db: Session, enseignant: EnseignantCreate):
 
     if enseignant_existant:
         raise HTTPException(status_code=400, detail="Ce matricule ou cet email existe deja")
+
+    enseignant.mot_de_passe = hacher_mot_de_passe(enseignant.mot_de_passe)
 
     nouvel_enseignant = Enseignant(**enseignant.model_dump())
 
