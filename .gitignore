@@ -8,3 +8,5 @@ backend/.env
 # Ignorer les caches
 backend/__pycache__/
 *.pyc
+backend/photos_reference/
+node_modules/
