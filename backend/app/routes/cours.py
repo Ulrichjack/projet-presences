@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.database import get_db
+from app.models.cours import Cours
 from app.schemas.cours import CoursCreate, CoursResponse
 from app.services import cours_service
-
+from app.models.seance import Seance
 # --- NOUVEAUX IMPORTS DE SÉCURITÉ ---
 from app.dependencies import verifier_admin, obtenir_utilisateur_actuel
 
@@ -26,6 +27,16 @@ def lire_les_cours(
     utilisateur = Depends(obtenir_utilisateur_actuel) # <-- Le videur "Connecté" est ici !
 ):
     return cours_service.get_cours(db=db, skip=skip, limit=limit)
+
+
+@router.get("/mes-cours", response_model=list[CoursResponse])
+def lire_mes_cours(db: Session = Depends(get_db), user = Depends(obtenir_utilisateur_actuel)):
+    # On cherche toutes les séances données par le prof connecté
+    seances_du_prof = db.query(Seance).filter(Seance.enseignant_id == user.id).all()
+    # On extrait les IDs uniques des cours
+    cours_ids = {s.cours_id for s in seances_du_prof}
+    # On retourne les cours correspondants
+    return db.query(Cours).filter(Cours.id.in_(cours_ids)).all()
 
 @router.get("/{cours_id}", response_model=CoursResponse)
 def lire_cours_par_id(
@@ -53,3 +64,4 @@ def supprimer_cours(
 ):
     cours_service.supprimer_cours(db=db, cours_id=cours_id)
     return
+

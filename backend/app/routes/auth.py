@@ -33,7 +33,9 @@ def connexion(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = De
     donnees_token = {
         "sub": utilisateur.email,  # sub = subject (le standard pour l'identifiant)
         "id": utilisateur.id,
-        "role": utilisateur.role
+        "role": utilisateur.role,
+        "prenom": utilisateur.prenom,
+        "nom": utilisateur.nom
     }
 
     token = creer_token_acces(data=donnees_token)

@@ -17,3 +17,8 @@ def inscrire_etudiant(inscription: InscriptionCreate, db: Session = Depends(get_
 @router.get("/", response_model=list[InscriptionResponse])
 def lire_les_inscriptions(db: Session = Depends(get_db)):
     return inscription_service.lister_inscriptions(db=db)
+
+
+@router.delete("/{inscription_id}")
+def supprimer_inscription(inscription_id: int, db: Session = Depends(get_db)):
+    return inscription_service.supprimer_inscription(db=db, inscription_id=inscription_id)
