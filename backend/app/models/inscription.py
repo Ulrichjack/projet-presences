@@ -6,6 +6,6 @@ class Inscription(Base):
     __tablename__ = "inscriptions"
 
     id = Column(Integer, primary_key=True, index=True)
-    etudiant_id = Column(Integer, ForeignKey("etudiants.id"), nullable=False)
-    cours_id = Column(Integer, ForeignKey("cours.id"), nullable=False)
+    etudiant_id = Column(Integer, ForeignKey("etudiants.id", ondelete="CASCADE"), nullable=False)
+    cours_id = Column(Integer, ForeignKey("cours.id", ondelete="CASCADE"), nullable=False)
     date_inscription = Column(DateTime, default=datetime.utcnow)

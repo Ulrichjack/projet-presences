@@ -1,24 +1,33 @@
-# app/schemas/etudiant_service.py
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional
 
-# 1. Le schéma pour CRÉER un étudiant (ce que le frontend envoie)
-class EtudiantCreate(BaseModel):
+# 1. Schéma de base (SANS LE MOT DE PASSE)
+class EtudiantBase(BaseModel):
     nom: str
     prenom: str
     matricule: str
-    email: EmailStr  # Pydantic vérifiera tout seul que c'est un vrai format d'email !
-    mot_de_passe: str
+    email: str
     photo_reference: Optional[str] = None
     qr_code: str
 
-# 2. Le schéma pour LIRE un étudiant (ce que le backend renvoie au frontend)
-# On ajoute l'ID et la date, car la base de données les a générés toute seule
-class EtudiantResponse(EtudiantCreate):
+# 2. Schéma pour CRÉER (On ajoute le mot de passe obligatoire)
+class EtudiantCreate(EtudiantBase):
+    mot_de_passe: str
+
+# 3. Schéma pour MODIFIER (Tout est optionnel)
+class EtudiantUpdate(BaseModel):
+    nom: Optional[str] = None
+    prenom: Optional[str] = None
+    matricule: Optional[str] = None
+    email: Optional[str] = None
+    mot_de_passe: Optional[str] = None
+    qr_code: Optional[str] = None
+
+# 4. Schéma pour RÉPONDRE (Hérite de la base = PAS DE MOT DE PASSE)
+class EtudiantResponse(EtudiantBase):
     id: int
     date_inscription: datetime
 
-    # Indique à Pydantic qu'il lit des données venant de SQLAlchemy
     class Config:
         from_attributes = True

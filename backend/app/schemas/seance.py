@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 class SeanceCreate(BaseModel):
     date_heure_debut: datetime
@@ -10,7 +11,7 @@ class SeanceCreate(BaseModel):
 
 class SeanceResponse(SeanceCreate):
     id: int
-    code_validation: str
+    code_validation: Optional[str] = None
 
     class Config:
         from_attributes = True

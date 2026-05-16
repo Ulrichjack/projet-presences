@@ -7,8 +7,8 @@ class Presence(Base):
     __tablename__ = "presences"
 
     id = Column(Integer, primary_key=True, index=True)
-    etudiant_id = Column(Integer, ForeignKey("etudiants.id"), nullable=False)
-    seance_id = Column(Integer, ForeignKey("seances.id"), nullable=False)
+    etudiant_id = Column(Integer, ForeignKey("etudiants.id", ondelete="CASCADE"), nullable=False)
+    seance_id = Column(Integer, ForeignKey("seances.id", ondelete="CASCADE"), nullable=False)
 
     # L'heure exacte à laquelle la caméra ou le scanner a vu l'étudiant
     heure_pointage = Column(DateTime, default=datetime.utcnow)

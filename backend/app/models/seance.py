@@ -14,7 +14,6 @@ class Seance(Base):
     date_heure_fin = Column(DateTime, nullable=False)
     salle = Column(String(50), nullable=False)
 
-    cours_id = Column(Integer, ForeignKey("cours.id"), nullable=False)
-    enseignant_id = Column(Integer, ForeignKey("enseignants.id"), nullable=False)
-
+    cours_id = Column(Integer, ForeignKey("cours.id", ondelete="CASCADE"), nullable=False)
+    enseignant_id = Column(Integer, ForeignKey("enseignants.id", ondelete="CASCADE"), nullable=False)
     code_validation = Column(String(50), unique=True, index=True, default=generer_code)
