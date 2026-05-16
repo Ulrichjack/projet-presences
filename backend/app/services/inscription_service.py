@@ -23,3 +23,14 @@ def inscrire_etudiant(db: Session, inscription: InscriptionCreate):
 
 def lister_inscriptions(db: Session):
     return db.query(Inscription).all()
+
+
+
+def supprimer_inscription(db: Session, inscription_id: int):
+    db_inscription = db.query(Inscription).filter(Inscription.id == inscription_id).first()
+    if not db_inscription:
+        raise HTTPException(status_code=404, detail="Inscription introuvable.")
+    db.delete(db_inscription)
+    db.commit()
+    return {"message": "Désinscription réussie."}
+
